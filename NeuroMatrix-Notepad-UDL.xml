@@ -1,5 +1,5 @@
 <NotepadPlus>
-    <UserLang name="NeuroMatrix Assembly" ext="asm" udlVersion="2.1">
+    <UserLang name="NeuroMatrix ASM" ext="asm" udlVersion="2.1">
         <Settings>
             <Global caseIgnored="no" allowFoldOfComments="yes" foldCompact="no" forcePureLC="0" decimalSeparator="0" />
             <Prefix Keywords1="no" Keywords2="no" Keywords3="no" Keywords4="yes" Keywords5="no" Keywords6="no" Keywords7="no" Keywords8="no" />
@@ -10,7 +10,7 @@
             <Keywords name="Numbers, prefix2"></Keywords>
             <Keywords name="Numbers, extras1"></Keywords>
             <Keywords name="Numbers, extras2">a b c d e f A B C D E F</Keywords>
-            <Keywords name="Numbers, suffix1">hl h</Keywords>
+            <Keywords name="Numbers, suffix1">hl h e</Keywords>
             <Keywords name="Numbers, suffix2"></Keywords>
             <Keywords name="Numbers, range"></Keywords>
             <Keywords name="Operators1">( ) , ; &lt;&lt; + - [ ] + - * = &gt;= : &lt;&gt; &lt; &gt;</Keywords>
