@@ -13,7 +13,7 @@
             <Keywords name="Numbers, suffix1">hl h e</Keywords>
             <Keywords name="Numbers, suffix2"></Keywords>
             <Keywords name="Numbers, range"></Keywords>
-            <Keywords name="Operators1">( ) , ; &lt;&lt; + - [ ] + - * / = &gt;= : &lt;&gt; &lt; &gt; </Keywords>
+            <Keywords name="Operators1">( ) , ; &lt;&lt; + - [ ] + - * / = &gt;= : &lt;&gt; &lt; &gt;</Keywords>
             <Keywords name="Operators2"></Keywords>
             <Keywords name="Folders in code1, open"></Keywords>
             <Keywords name="Folders in code1, middle"></Keywords>
@@ -24,7 +24,7 @@
             <Keywords name="Folders in comment, open"></Keywords>
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close"></Keywords>
-            <Keywords name="Keywords1">activate addr and branch call callrel carry cfalse clear code common const ctrue delayed double dup endif else false flag float ftw goto hiword if ireturn loword mask nobits noflags not nul offset own pop push ref rep return const shift sizeof skip store string vfalse vnul vregs vsum vtrue weak with wtw xor wait set or</Keywords>
+            <Keywords name="Keywords1">activate addr and branch call callrel carry cfalse clear code common const ctrue delayed double dup endif else false flag float ftw goto hiword if ireturn loword mask nobits noflags not nul offset own pop push ref rep return true shift sizeof skip store string vfalse vnul vregs vsum vtrue weak with wtw xor wait set or</Keywords>
             <Keywords name="Keywords2">.align .branch .wait .repeat .endrepeat</Keywords>
             <Keywords name="Keywords3">begin local global import from struct end label macro extern word long</Keywords>
             <Keywords name="Keywords4">x</Keywords>
