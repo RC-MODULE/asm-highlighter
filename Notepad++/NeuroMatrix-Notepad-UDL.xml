@@ -1,5 +1,5 @@
 <NotepadPlus>
-    <UserLang name="NeuroMatrix ASM" ext="asm" udlVersion="2.1">
+    <UserLang name="NeuroMatrix ASM" ext="asm s" udlVersion="2.1">
         <Settings>
             <Global caseIgnored="no" allowFoldOfComments="yes" foldCompact="no" forcePureLC="0" decimalSeparator="0" />
             <Prefix Keywords1="no" Keywords2="no" Keywords3="no" Keywords4="yes" Keywords5="no" Keywords6="no" Keywords7="no" Keywords8="no" />
@@ -24,11 +24,11 @@
             <Keywords name="Folders in comment, open"></Keywords>
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close"></Keywords>
-            <Keywords name="Keywords1">activate addr and branch call callrel carry cfalse clear code common const ctrue delayed double dup endif else false flag float ftw goto hiword if ireturn loword mask nobits noflags not nul offset own pop push ref rep return true shift sizeof skip store string vfalse vnul vregs vsum vtrue weak with wtw xor wait set or</Keywords>
-            <Keywords name="Keywords2">.align .branch .wait .repeat .endrepeat</Keywords>
+            <Keywords name="Keywords1">fpu activate addr and branch call callrel carry cfalse clear code common const ctrue delayed double dup endif else false flag float ftw goto hiword if ireturn loword mask nobits noflags not nul offset own pop push ref rep return true shift sizeof skip store string vfalse vnul vregs vsum vtrue weak with wtw xor wait set or</Keywords>
+            <Keywords name="Keywords2">.retrive .matrix .complex .float .align .branch .wait .repeat .endrepeat</Keywords>
             <Keywords name="Keywords3">begin local global import from struct end label macro extern word long</Keywords>
             <Keywords name="Keywords4">x</Keywords>
-            <Keywords name="Keywords5">ar0 ar1 ar2 ar3 ar4 ar5 ar6 ar7 gr0 gr1 gr2 gr3 gr4 gr5 gr6 gr7 pc pswr intr f1cr f1crh f1crl f2cr f2crh f2crl vr vrh vrl nb1 nb1h nb1l sb sbh sbl sp gmicr lmicr oca0 oca1 ica0 ica1 occ0 occ1 icc0 icc1 dor0 dor1 dir0 dir1 t0 t1 wfifo afifo data ram</Keywords>
+            <Keywords name="Keywords5">vlen vreg0 vreg1 vreg2 vreg3 vreg4 vreg5 vreg6 vreg7 ar0 ar1 ar2 ar3 ar4 ar5 ar6 ar7 gr0 gr1 gr2 gr3 gr4 gr5 gr6 gr7 pc pswr intr f1cr f1crh f1crl f2cr f2crh f2crl vr vrh vrl nb1 nb1h nb1l sb sbh sbl sp gmicr lmicr oca0 oca1 ica0 ica1 occ0 occ1 icc0 icc1 dor0 dor1 dir0 dir1 t0 t1 wfifo afifo data ram</Keywords>
             <Keywords name="Keywords6"></Keywords>
             <Keywords name="Keywords7"></Keywords>
             <Keywords name="Keywords8"></Keywords>
