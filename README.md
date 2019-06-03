@@ -26,6 +26,38 @@ Notepad++ — свободный текстовый редактор с откр
 
 ![Notepad++](/Notepad++/Screenshot.PNG?raw=true)
 
+### Как настроить остображение "Список функций" в Notepad++ для ассемблерных файлов
+1. открываем файл 
+%AppData%\Notepad++\functionList.xml
+
+2. добавляем  перед тегом ```</associationMap>```   
+
+```<association id="neuromatrix_label"  userDefinedLangName="NeuroMatrix ASM"/>```  
+	  
+
+3. добавляем  перед тегом  ```</parsers>```   
+```css
+<!-- ======================================================= [ NeuroMatrix ] -->
+<parser id="neuromatrix_label" displayName="NeuroMatrix" commentExpr="((/\*.*?\*))">
+	<function
+		mainExpr="(^[\t ]*<[\w]+>)|(^[\t ]*[\w]+:)" 
+		displayMode="$functionName">
+		<functionName>
+			<nameExpr expr="\w*"/>
+		</functionName>
+	</function>
+</parser>
+```
+4. Перегружаем Notepad++			
+5. Включаем отображение списка функций	Меню->Вид->Список функций. 
+![Notepad++](/Notepad++/FunctionList.png?raw=true)
+
+>Для работы FunctionList необходим установленный синтаксис языка "NeuroMatrix ASM"
+
+пример готового [functionList.xml](/Notepad++/Screenshot.PNG?raw=true)
+
+
+
 ## Visual Studio
 
 Microsoft Visual Studio — интегрированная среда разработки программ, позволяющая при использовании makefile разрабатывать программы для Neuromatrix на языках C/C++ и языке ассемблера. 
@@ -47,3 +79,5 @@ Microsoft Visual Studio — интегрированная среда разра
 ![Light theme](/Visual Studio/Light_web.PNG?raw=true)
 
 ![Dark theme](/Visual Studio/Dark_web.PNG?raw=true)
+
+
