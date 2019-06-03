@@ -1,4 +1,4 @@
-﻿# Подсветка синтаксиса языка ассемблера NeuroMatrix
+﻿# Подсветка синтаксиса языка ассемблера NeuroMatrix и навигациия по меткам
 ___
 
 Реализация подсветки синтаксиса ассемблера NeuroMatrix для [Notepad++](https://notepad-plus-plus.org/) и [Microsoft Visual Studio](https://www.visualstudio.com/) 2013 (кроме Express) и 2015.
@@ -27,7 +27,7 @@ Notepad++ — свободный текстовый редактор с откр
 ![Notepad++](/Notepad++/Screenshot.PNG?raw=true)
 
 ### Настройка вида "Список функций" в Notepad++ для ассемблерных файлов
-Удобную навигацию по меткам ассемлерного файла можно сделать сделующим образом:
+Удобную навигацию по меткам ассемлерного файла можно сделать сдедующим образом:
 
 1. открываем файл 
 %AppData%\Notepad++\functionList.xml
@@ -78,8 +78,8 @@ Microsoft Visual Studio — интегрированная среда разра
 
 ### Пример работы
 
-![Light theme](/Visual Studio/Light_web.PNG?raw=true)
+![Light theme](/VisualStudio/Light_web.PNG?raw=true)
 
-![Dark theme](/Visual Studio/Dark_web.PNG?raw=true)
+![Dark theme](/VisualStudio/Dark_web.PNG?raw=true)
 
 
