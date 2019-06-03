@@ -54,7 +54,7 @@ Notepad++ — свободный текстовый редактор с откр
 
 >Для работы FunctionList необходим установленный синтаксис языка "NeuroMatrix ASM"
 
-пример готового [functionList.xml](/Notepad++/Screenshot.PNG?raw=true)
+пример готового [functionList.xml](/Notepad++/functionList.xml)
 
 
 
