@@ -1,0 +1,135 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: NeuroMatrixASM
+file_extensions: [s, asm, mlb]
+scope: source.c
+contexts:
+  main:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character
+    - match: '"'
+      scope: punctuation.definition.string.begin
+      push: double_quoted_string
+
+    # Comments begin with a '//' and finish at the end of the line
+    - match: '//'
+      scope: punctuation.definition.comment
+      push: line_comment
+
+    # Comments begin with a '//' and finish at the end of the line
+    - match: '/\*'
+      scope: punctuation.definition.comment
+      push: block_comment
+
+    # label
+    - match: '<[_a-zA-Z][a-zA-Z0-9_\.]*>'
+      scope: entity.name.label
+
+    - match: '([\[\]])'
+      scope: keyword.other
+
+    - match: ';'
+      scope: punctuation.terminator
+
+    - match: '[,:]'
+      scope: punctuation.separator
+
+    - match: '\b(global|local|extern|import|from|weak|own)\b'
+      scope: storage.modifier
+
+    - match: '\b(label|long|word)\b'
+      scope: storage.type
+
+    - match: '\bif\b'
+      scope: keyword.control.conditional
+
+    - match: '\b(delayed|goto|with|push|pop|fpu|rep|i?return|clear|set|nul|and|or|ftw|wtw|call|noflags|dup)\b'
+      scope: keyword.operator.word
+
+    - match: '\b(true|false)\b'
+      scope: constant.language
+
+    - match: '\b(ar[0-7]?|gr[0-7]|sp|intr|pswr)\b'
+      scope: variable.language
+
+    - match: '\b(vlen|sir|fp[0-3]_[lh]mask)\b'
+      scope: variable.language
+
+    - match: '\b(nb1|sb)\b'
+      scope: variable.language
+
+
+    # Numbers
+
+    - match: '\b(-)?[0-9][_0-9a-fA-F]*[bBoOhH]?[l]?\b'
+      scope: constant.numeric
+
+    - match: '(\+|=|-|\+|<<|>>|\*)'
+      scope: keyword.operator.arithmetic
+
+    - match: '(fpu|rep)'
+      scope: keyword.operator.word
+    #  push: vector_instruction
+
+  #vector_instruction:
+    - meta_scope: meta.group
+    - match: '\b(data|afifo|ram|wfifo)\b'
+      scope: variable.language
+
+    - match: '\b(activate|vsum|shift|mask)\b'
+      scope: keyword.control
+
+    - match: '\?'
+      scope: keyword.operator.arithmetic
+
+    - match: '\b(vreg[0-7])\b'
+      scope: variable.language
+
+    - match: '\.\b(float|double|matrix|packer|retrive)\b'
+      scope: keyword.control
+
+    #- match: $
+    #  pop: true
+    # Keywords are if, else for and while.
+    # Note that blackslashes don't need to be escaped within single quoted
+    # strings in YAML. When using single quoted strings, only single quotes
+    # need to be escaped: this is done by using two single quotes next to each
+    # other.
+#    - match: '\btext\b"'
+#      scope: keyword.declaration
+#      push: code_section
+#
+#    - match: 'data\s*"'
+#      scope: keyword.declaration
+#      push: code_section
+#
+#  code_section:
+#    - match: "end"
+#      scope: keyword.declaration
+#      pop: true
+
+  function_parametres:
+    - meta_scope: meta.block
+    - match: \(([_a-zA-Z][a-zA-Z0-9_\.]*,?)*\)
+      scope: variable.parameter
+      pop: true
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double
+    - match: \\.
+      scope: constant.character.escape
+    - match: '"'
+      scope: punctuation.definition.string.end
+      pop: true
+
+  line_comment:
+    - meta_scope: comment.line
+    - match: $
+      pop: true
+
+  block_comment:
+    - meta_scope: comment.block
+    - match: '\*/'
+      scope: punctuation.definition.comment
+      pop: true

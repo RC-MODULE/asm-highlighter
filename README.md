@@ -83,3 +83,17 @@ Microsoft Visual Studio — интегрированная среда разра
 ![Dark theme](/VisualStudio/Dark_web.PNG?raw=true)
 
 
+## Sublime Text 3
+
+Sublime Text 3 — свободный текстовый редактор с открытым исходным кодом для Windows с подсветкой синтаксиса большого количества языков программирования и разметки.
+
+Поддерживаемые опции:
+* Подсветка синтаксиса;
+
+### Установка синтакиса "NeuroMatrix ASM"	 в Sublime Text 3
+
+[Главное меню->Preferences->Browse Package] 
+
+Откроется папка. Заходим в User и туда перекинуть файл NeuroMatrixASM.sublime-syntax
+
+В меню [Главное меню->View->Syntax] должен появиться пункт "NeuroMatrix ASM" 
