@@ -2,17 +2,155 @@
 ---
 # See http://www.sublimetext.com/docs/3/syntax.html
 name: NeuroMatrixASM
-file_extensions: [s, asm, mlb]
+file_extensions: [asm, mlb]
 scope: source.c
+variables: 
+  ident: '[a-zA-Z_][\.a-zA-Z0-9_]*'
+  section_ident: '\.?[a-zA-Z][\.a-zA-Z0-9_]+'
+  const: '[0-1_]*[bB][lL]?|[0-7_]*[oO][lL]?|-?[0-9_]*[lL]?|[0-9][0-9a-fA-F_]*[hH][lL]?'
+  language_consts: '[v]?true|[v]?false'
+  sections: 'begin|data|nobits'
+  sregs_main: 'gr[0-7]|ar[0-7]|pc|pswr|intr|sp'
+  sregs_vexp: 'f[1-2]cr[hl]?|vr[hl]?|nb1[hl]?|sb[hl]?'
+  sregs_vexp_f: 'vlen|sir|fp_pack_exp|fp[0-4]_flags|fp[0-4]_[dlh]mask'
+  vregs: 'data|ram|wfifo|afifo'
+  vregs_f: 'vreg[0-7]'
+  operators: '\+|-|\*|/|[ARC]?<<|[ARC]?>>|<|<=|>|>=|==|!=|\b(not|and|xor|or)\b|='
+  voperators: 'vsum|activate|mask|shift'
+  voperators_f: 'set|mask'
+  vtypes_f: '(matrix|float|double|retrive|retrieve|in_high|in_low|fixed_(32|64)|packer)'
+  pseudo_func: 'float|double|hiword|loword|offset|sizeof'
+  pseudo_const: '[\+-][0-9]*(\.[0-9]*(E[\+-][0-9]*)?)?'
+  keywords: 'set|with|clear|delayed|noflags'
+  keyword_commands: 'push|pop|ftw|wtw|nul'
+  jump_commands: 'goto|skip|call|i?return|callrel'
+  bind_type: 'local|global|extern|weak|own'
+  data_type: 'word|long|label'
+  directives: '(align|branch|endif|endrepeat|if|repeat|wait|nm6403|nm6405)'
+  debug_directives: '\.debug_(arange|die|die_child|die_endchild|end_sequence|frame_cie|frame_fde|line|pubname|root_die|source_directory|source_file|start_sequence)'
 contexts:
   main:
-    # Strings begin and end with quotes, and use backslashes as an escape
-    # character
-    - match: '"'
-      scope: punctuation.definition.string.begin
-      push: double_quoted_string
+    #- meta_scope: show_scope_name
+    - include: global
+    - match: '(data|nobits)\s+(")?({{section_ident}})(")'
+      captures:
+        1: keyword.control
+        2: punctuation.definition.string.begin
+        3: string.quoted.double
+        4: punctuation.definition.string.end
+        5: punctuation.terminator
+      push:
+        - include: global
+        - match: '\b(end)\s+(")?({{section_ident}})(")?'
+          captures:
+            1: keyword.control
+            2: punctuation.definition.string.begin
+            3: string.quoted.double
+            4: punctuation.definition.string.end
+          push: 
+            - match: ;
+              scope: punctuation.terminator
+              pop: 2
 
+    - match: '(begin)\s+(")?({{section_ident}})(")?\s*$'
+      captures:
+        1: keyword.control
+        2: punctuation.definition.string.begin
+        3: string.quoted.double
+        4: punctuation.definition.string.end
+        5: punctuation.terminator
+      push:
+        - include: global
+        - include: code
+        - include: main
+        - match: '\b(end)\s+(")?({{section_ident}})(")?'
+          captures:
+            1: keyword.control
+            2: punctuation.definition.string.begin
+            3: string.quoted.double
+            4: punctuation.definition.string.end
+          push: 
+            - match: ;
+              scope: punctuation.terminator
+              pop: 2
+
+    - match: '(macro)\s+({{ident}})'
+      captures:
+        1: keyword.declaration.function
+        2: storage.type.function
+        3: variable.parameter
+      push:
+        - include: main
+        - include: code
+        - include: global
+        - match: '\('
+          scope: punctuation.section.brackets.begin
+          push: functions_parametres
+        - match: '\b(end)\s+({{ident}})'
+          captures:
+            1: keyword.declaration.function
+            2: storage.type.function
+          push: 
+            - match: ;
+              scope: punctuation.terminator
+              pop: 2
+
+  code:
+    - include: global
+    - match: '<{{ident}}>'
+      scope: entity.name.label
+
+    - match: '\bif\b'
+      scope: keyword.control.conditional
+
+    - match: '\b({{keywords}})\b'
+      scope: keyword.operator.word
+
+    - match: '\b({{keyword_commands}})\b'
+      scope: keyword.operator.word
+
+    - match: '\b({{jump_commands}})\b'
+      scope: keyword.operator.word
+
+    - match: '\b({{language_consts}})\b'
+      scope: constant.language
+
+    - match: '\b({{sregs_main}}|{{sregs_vexp}}|{{sregs_vexp_f}})\b'
+      scope: variable.language
+
+    - match: '({{operators}})'
+      scope: keyword.operator.arithmetic
+
+    - match: '({{pseudo_func}})'
+      scope: variable.function
+
+    - match: '\b(fpu|rep)\b'
+      scope: keyword.operator.word
+      push: vector_instruction
+
+    - match: '({{ident}})\s*(\()'
+      captures:
+        1: variable.function
+        2: punctuation.section.brackets.begin
+      push: functions_parametres
+
+  global:
     # Comments begin with a '//' and finish at the end of the line
+    - match: '(({{bind_type}})\s+)?({{ident}})\s*(:)\s*({{data_type}})'
+      captures:
+        2: storage.modifier
+        4: punctuation.separator
+        5: storage.type
+
+    - match: ';'
+      scope: punctuation.terminator
+
+    - match: 'import'
+      scope: keyword.control
+
+    - match: '({{pseudo_func}})'
+
+      scope: variable.function
     - match: '//'
       scope: punctuation.definition.comment
       push: line_comment
@@ -22,105 +160,47 @@ contexts:
       scope: punctuation.definition.comment
       push: block_comment
 
-    # label
-    - match: '<[_a-zA-Z][a-zA-Z0-9_\.]*>'
-      scope: entity.name.label
+    # Numbers
+    - match: '\b({{const}})\b'
+      scope: constant.numeric
 
     - match: '([\[\]])'
       scope: keyword.other
 
-    - match: ';'
-      scope: punctuation.terminator
-
     - match: '[,:]'
       scope: punctuation.separator
 
-    - match: '\b(global|local|extern|import|from|weak|own)\b'
-      scope: storage.modifier
+    - match: '\.({{directives}})'
+      scope: meta.preprocessor
 
-    - match: '\b(label|long|word)\b'
-      scope: storage.type
+  vector_instruction:
+    - include: code
+    - match: '\b({{vregs}}|{{vregs_f}})\b'
+      scope: variable.language
 
-    - match: '\bif\b'
-      scope: keyword.control.conditional
-
-    - match: '\b(delayed|goto|with|push|pop|fpu|rep|i?return|clear|set|nul|and|or|ftw|wtw|call|noflags|dup)\b'
+    - match: '\b(rep|fpu)\b'
       scope: keyword.operator.word
 
-    - match: '\b(true|false)\b'
-      scope: constant.language
-
-    - match: '\b(ar[0-7]?|gr[0-7]|sp|intr|pswr)\b'
-      scope: variable.language
-
-    - match: '\b(vlen|sir|fp[0-3]_[lh]mask)\b'
-      scope: variable.language
-
-    - match: '\b(nb1|sb)\b'
-      scope: variable.language
-
-
-    # Numbers
-
-    - match: '\b(-)?[0-9][_0-9a-fA-F]*[bBoOhH]?[l]?\b'
-      scope: constant.numeric
-
-    - match: '(\+|=|-|\+|<<|>>|\*)'
-      scope: keyword.operator.arithmetic
-
-    - match: '(fpu|rep)'
-      scope: keyword.operator.word
-    #  push: vector_instruction
-
-  #vector_instruction:
-    - meta_scope: meta.group
-    - match: '\b(data|afifo|ram|wfifo)\b'
-      scope: variable.language
-
-    - match: '\b(activate|vsum|shift|mask)\b'
+    - match: '\b({{voperators_f}}|{{voperators}})\b'
       scope: keyword.control
 
     - match: '\?'
       scope: keyword.operator.arithmetic
 
-    - match: '\b(vreg[0-7])\b'
-      scope: variable.language
-
-    - match: '\.\b(float|double|matrix|packer|retrive)\b'
+    - match: '\.\b({{vtypes_f}})\b'
       scope: keyword.control
 
-    #- match: $
-    #  pop: true
-    # Keywords are if, else for and while.
-    # Note that blackslashes don't need to be escaped within single quoted
-    # strings in YAML. When using single quoted strings, only single quotes
-    # need to be escaped: this is done by using two single quotes next to each
-    # other.
-#    - match: '\btext\b"'
-#      scope: keyword.declaration
-#      push: code_section
-#
-#    - match: 'data\s*"'
-#      scope: keyword.declaration
-#      push: code_section
-#
-#  code_section:
-#    - match: "end"
-#      scope: keyword.declaration
-#      pop: true
-
-  function_parametres:
-    - meta_scope: meta.block
-    - match: \(([_a-zA-Z][a-zA-Z0-9_\.]*,?)*\)
-      scope: variable.parameter
+    - match: $
       pop: true
 
-  double_quoted_string:
-    - meta_scope: string.quoted.double
-    - match: \\.
-      scope: constant.character.escape
-    - match: '"'
-      scope: punctuation.definition.string.end
+  functions_parametres:
+    #- match: \b({{ident}})\b
+    - match: \b(\w*)\b
+      scope: variable.parameter
+    - match: ','
+      scope: punctuation.separator
+    - match: '\)'
+      scope: punctuation.section.brackets.end                 
       pop: true
 
   line_comment:
