@@ -1,8 +1,8 @@
 %YAML 1.2
 ---
 # See http://www.sublimetext.com/docs/3/syntax.html
-name: NeuroMatrixASM
-file_extensions: [asm, mlb]
+name: NeuroMatrixGAS
+file_extensions: [s]
 scope: source.c
 variables: 
   ident: '[a-zA-Z_][\.a-zA-Z0-9_]*'
@@ -32,7 +32,8 @@ contexts:
   main:
     #- meta_scope: show_scope_name
     - include: global
-    - match: '(data|nobits)\s+(")?({{section_ident}})(")'
+    - include: code
+    - match: '\.(data|nobits)\s+(")?({{section_ident}})(")'
       captures:
         1: keyword.control
         2: punctuation.definition.string.begin
@@ -52,52 +53,30 @@ contexts:
               scope: punctuation.terminator
               pop: 2
 
-    - match: '(begin)\s+(")?({{section_ident}})(")?\s*'
+    - match: '(\.section)\s+(.*)\s*$'
       captures:
         1: keyword.control
-        2: punctuation.definition.string.begin
-        3: string.quoted.double
-        4: punctuation.definition.string.end
-        5: punctuation.terminator
-      push:
-        - include: global
-        - include: code
-        - include: main
-        - match: '\b(end)\s+(")?({{section_ident}})(")?'
-          captures:
-            1: keyword.control
-            2: punctuation.definition.string.begin
-            3: string.quoted.double
-            4: punctuation.definition.string.end
-          push: 
-            - match: ;
-              scope: punctuation.terminator
-              pop: 2
+        2: string.quoted.double
 
-    - match: '(macro)\s+({{ident}})'
+    - match: '(\.macro)\s+({{ident}})\s+((\b({{ident}}\b)(,))*\b({{ident}}))?'
       captures:
         1: keyword.declaration.function
-        2: storage.type.function
-        3: variable.parameter
+        2: entity.name.function
+        4: variable.parameter
+        6: punctuation.separator
+        7: variable.parameter
+      scope: 
       push:
-        - include: main
         - include: code
-        - include: global
-        - match: '\('
-          scope: punctuation.section.brackets.begin
-          push: functions_parametres
-        - match: '\b(end)\s+({{ident}})'
-          captures:
-            1: keyword.declaration.function
-            2: storage.type.function
-          push: 
-            - match: ;
-              scope: punctuation.terminator
-              pop: 2
+        - match: '\\{{ident}}'
+          scope: variable.parameter
+        - match: '(\.endm)'
+          scope: keyword.declaration.function
+          pop: true
 
   code:
     - include: global
-    - match: '<{{ident}}>'
+    - match: '{{ident}}\s*:\s*$'
       scope: entity.name.label
 
     - match: '\bif\b'
@@ -128,19 +107,13 @@ contexts:
       scope: keyword.operator.word
       push: vector_instruction
 
-    - match: '({{ident}})\s*(\()'
-      captures:
-        1: variable.function
-        2: punctuation.section.brackets.begin
-      push: functions_parametres
-
   global:
     # Comments begin with a '//' and finish at the end of the line
-    - match: '(({{bind_type}})\s+)?({{ident}})\s*(:)\s*({{data_type}})'
+    #- match: '(({{bind_type}})\s+)?({{ident}})\s*(:)\s*({{data_type}})'
+    - match: '((\.{{bind_type}})\s+)?({{ident}})\s*$'
       captures:
         2: storage.modifier
-        4: punctuation.separator
-        5: storage.type
+        3: constant.language
 
     - match: ';'
       scope: punctuation.terminator
@@ -199,7 +172,7 @@ contexts:
       scope: variable.parameter
     - match: ','
       scope: punctuation.separator
-    - match: '\)'
+    - match: '$'
       scope: punctuation.section.brackets.end                 
       pop: true
 
